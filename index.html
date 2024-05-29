@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Viewer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: #121214;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            
+        }
+
+        .links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .links ul li {
+            margin: 14px;
+        }
+
+        .link {
+            display: block;
+            background-color: #024AAD;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: ease all 0.3s;
+            color: #FFF;
+            width: 40px;
+        }
+
+        .link:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="links">
+            <ul id="linkList">
+                <!-- Links will be populated here by JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch links from links.txt and create link elements
+        async function fetchAndCreateLinks() {
+            const response = await fetch('links.txt');
+            const text = await response.text();
+            const links = text.split('\n').filter(link => link.trim() !== '');
+            createLinks(links);
+        }
+
+        // Function to create link elements
+        function createLinks(links) {
+            const linkList = document.getElementById('linkList');
+
+            links.forEach((link, index) => {
+                // Create list item
+                const li = document.createElement('li');
+
+                // Create anchor element with a number prefix
+                const anchor = document.createElement('a');
+                anchor.href = link;
+                anchor.innerText = `${index + 1}`;
+                anchor.className = 'link';
+                anchor.target = "_blank";
+                li.appendChild(anchor);
+
+                // Add the list item to the link list
+                linkList.appendChild(li);
+            });
+        }
+
+        // Initialize links on page load
+        window.onload = () => {
+            fetchAndCreateLinks();
+        };
+    </script>
+</body>
+
+</html>
